@@ -1,8 +1,11 @@
 package router;
 
-import adminUsers.AdminUsersGUI;
-import login.LoginGUI;
+import admin.AdminUsersForm;
+import admin.CreateUserForm;
+import login.LoginForm;
 import models.Role;
+
+import javax.swing.*;
 
 /**
  * Created by Artur on 15.11.2017.
@@ -18,29 +21,38 @@ public class MainRouter {
         return MainRouter.mainRouter;
     }
 
-    private LoginGUI loginGUI = null;
-    private AdminUsersGUI adminUsersGUI = null;
+    JFrame currentFrame = null;
 
     private MainRouter() {
-        this.loginGUI = new LoginGUI();
-        this.clear();
-        this.loginGUI.setVisible(true);
+        this.currentFrame = new LoginForm();
+        this.currentFrame.setVisible(true);
     }
 
     public void setRole(Role role) {
         MainRouter.role = role;
     }
 
-    public void loginRoute() {
-        if (MainRouter.role != null && MainRouter.role.getName().equals("Admin")) {
-            this.clear();
-            this.adminUsersGUI = new AdminUsersGUI();
-            this.adminUsersGUI.setVisible(true);
-        }
+    public boolean loginRoute() {
+        return this.usersRoute();
     }
 
-    private void clear() {
-        this.loginGUI.setVisible(false);
-        if (this.adminUsersGUI != null) this.adminUsersGUI.setVisible(false);
+    public boolean usersRoute() {
+        if (MainRouter.role != null && MainRouter.role.getName().equals("Admin")) {
+            this.currentFrame.dispose();
+            this.currentFrame = new AdminUsersForm();
+            this.currentFrame.setVisible(true);
+            return true;
+        }
+        return false;
+    }
+
+    public boolean createUserRoute() {
+        if (MainRouter.role != null && MainRouter.role.getName().equals("Admin")) {
+            this.currentFrame.dispose();
+            this.currentFrame = new CreateUserForm();
+            this.currentFrame.setVisible(true);
+            return true;
+        }
+        return false;
     }
 }

@@ -2,8 +2,8 @@ package login.listeners;
 
 import models.Role;
 import router.MainRouter;
-import serverRemote.ClientConnector;
-import serverRemote.ServerRemote;
+import remote.ClientConnector;
+import remote.ServerRemote;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;

@@ -1,5 +1,5 @@
 import router.MainRouter;
-import serverRemote.ClientConnector;
+import remote.ClientConnector;
 
 import java.net.MalformedURLException;
 import java.rmi.NotBoundException;
