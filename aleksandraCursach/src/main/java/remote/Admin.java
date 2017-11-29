@@ -26,4 +26,22 @@ public class Admin extends UnicastRemoteObject implements AdminRemote {
             return new ArrayList<User>();
         }
     }
+
+    public List<User> saveUser(User user) throws RemoteException {
+        try {
+            this.adminService.saveUser(user);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return getUsers();
+    }
+
+    public List<User> deleteUser(long id) throws RemoteException {
+        try {
+            this.adminService.deleteUser(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return getUsers();
+    }
 }

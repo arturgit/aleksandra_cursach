@@ -28,7 +28,7 @@ public class UsersTableModel implements TableModel {
     }
 
     public int getColumnCount() {
-        return 3;
+        return 7;
     }
 
     public String getColumnName(int columnIndex) {

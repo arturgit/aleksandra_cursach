@@ -4,7 +4,6 @@ import admin.helpers.TableUser;
 import admin.helpers.UsersTableModel;
 import admin.listeners.CreatingUserFormListener;
 import admin.listeners.DeleteUserListener;
-import admin.listeners.EditUserListener;
 import models.User;
 import remote.ClientConnector;
 
@@ -18,6 +17,7 @@ import java.util.ArrayList;
  */
 public class AdminUsersForm extends JFrame {
     private JTable table = null;
+    private UsersTableModel tableModel = null;
     private JButton newButton = null;
     private JButton editButton = null;
     private JButton deleteButton = null;
@@ -38,8 +38,8 @@ public class AdminUsersForm extends JFrame {
     private void initComponents() {
         this.setLayout(new GridBagLayout());
         this.createComponents();
-        this.initButtonMenu();
         this.initJTable();
+        this.initButtonMenu();
     }
 
     private void createComponents() {
@@ -69,10 +69,10 @@ public class AdminUsersForm extends JFrame {
         JPanel panel = new JPanel();
         panel.setLayout(new FlowLayout(FlowLayout.LEFT));
         newButton.addActionListener(new CreatingUserFormListener(this.table));
-        editButton.addActionListener(new EditUserListener(this.table));
-        deleteButton.addActionListener(new DeleteUserListener(this.table));
+//        editButton.addActionListener(new EditUserListener(this.table));
+        deleteButton.addActionListener(new DeleteUserListener(this.table, this.tableModel));
         panel.add(newButton);
-        panel.add(editButton);
+//        panel.add(editButton);
         panel.add(deleteButton);
         return panel;
     }
@@ -94,7 +94,8 @@ public class AdminUsersForm extends JFrame {
     }
 
     private JScrollPane getTable() {
-        this.table = new JTable(new UsersTableModel(this.getTableUsersFromServer()));
+        this.tableModel = new UsersTableModel(this.getTableUsersFromServer());
+        this.table = new JTable(this.tableModel);
         return new JScrollPane(table);
     }
 

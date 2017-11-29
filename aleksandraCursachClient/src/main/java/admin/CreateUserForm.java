@@ -1,6 +1,7 @@
 package admin;
 
 import admin.listeners.BackToUsersListener;
+import admin.listeners.CreateUserListener;
 
 import javax.swing.*;
 import java.awt.*;
@@ -61,10 +62,10 @@ public class CreateUserForm extends JFrame {
         this.nameLabel = new JLabel("Name:");
         this.nameField = new JTextField(10);
         this.positionLabel = new JLabel("Position:");
-        String[] positions = { "tester", "webDev", "javaDev" };
+        String[] positions = { "Tester", "BA", "WebDev", "JavaDev" };
         this.positionBox = new JComboBox(positions);
         this.levelLabel = new JLabel("Level");
-        String[] levels = { "junior", "middle", "senior" };
+        String[] levels = { "Junior", "Middle", "Senior" };
         this.levelBox = new JComboBox(levels);
     }
 
@@ -85,5 +86,7 @@ public class CreateUserForm extends JFrame {
 
     private void initButtonListeners() {
         this.backButton.addActionListener(new BackToUsersListener());
+        this.createButton.addActionListener(new CreateUserListener(this.loginField, this.passwordField,
+                this.nameField, this.positionBox, this.levelBox));
     }
 }

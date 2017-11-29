@@ -24,10 +24,59 @@ public class AdminService {
             "ON users.role_id = roles.id INNER JOIN positions ON users.position_id = positions.id " +
             "INNER JOIN levels ON users.level_id = levels.id;";
 
+    private static final String saveUserQuery = "INSERT INTO users (login, password, name, role_id, position_id, level_id) " +
+            "VALUE (?, ?, ?, ?, ?, ?);";
+
+    private static final String findLevel = "SELECT * FROM levels WHERE levels.name = ?;";
+
+    private static final String findPosition = "SELECT * FROM positions WHERE positions.name = ?;";
+
+    private static final String deleteUserQuery = "DELETE FROM users WHERE users.id = ?;";
+
     public List<User> getUsers() throws SQLException, IOException, ClassNotFoundException {
         Connection dbConnection = DatabaseConnector.getDBConnection();
         PreparedStatement statement = dbConnection.prepareStatement(AdminService.selectUsersQuery);
-        return this.getListOfUser(statement);
+        List<User> users = this.getListOfUser(statement);
+        dbConnection.close();
+        return users;
+    }
+
+    public void saveUser(User user) throws SQLException, IOException, ClassNotFoundException {
+        int levelId = this.findLevelByName(user.getLevel().getName());
+        int positionId = this.findPositionByName(user.getPosition().getName());
+
+        Connection dbConnection = DatabaseConnector.getDBConnection();
+        PreparedStatement statement = dbConnection.prepareStatement(AdminService.saveUserQuery);
+        statement.setString(1, user.getLogin());
+        statement.setString(2, user.getPassword());
+        statement.setString(3, user.getName());
+        statement.setLong(4, 1);
+        statement.setLong(5, positionId);
+        statement.setLong(6, levelId);
+        statement.execute();
+        dbConnection.close();
+    }
+
+    private int findLevelByName(String name) throws SQLException, IOException, ClassNotFoundException {
+        Connection dbConnection = DatabaseConnector.getDBConnection();
+        PreparedStatement statement = dbConnection.prepareStatement(AdminService.findLevel);
+        statement.setString(1, name);
+        ResultSet rs = statement.executeQuery();
+        rs.next();
+        int id = rs.getInt("id");
+        dbConnection.close();
+        return id;
+    }
+
+    private int findPositionByName(String name) throws SQLException, IOException, ClassNotFoundException {
+        Connection dbConnection = DatabaseConnector.getDBConnection();
+        PreparedStatement statement = dbConnection.prepareStatement(AdminService.findPosition);
+        statement.setString(1, name);
+        ResultSet rs = statement.executeQuery();
+        rs.next();
+        int id = rs.getInt("id");
+        dbConnection.close();
+        return id;
     }
 
     private List<User> getListOfUser(PreparedStatement statement) throws SQLException {
@@ -49,5 +98,13 @@ public class AdminService {
             new Position(new Long(rs.getString("position_id")), rs.getString("position_name")),
             new Level(new Long(rs.getString("level_id")), rs.getString("level_name"))
         );
+    }
+
+    public void deleteUser(long id) throws SQLException, IOException, ClassNotFoundException {
+        Connection dbConnection = DatabaseConnector.getDBConnection();
+        PreparedStatement statement = dbConnection.prepareStatement(AdminService.deleteUserQuery);
+        statement.setLong(1, id);
+        statement.execute();
+        dbConnection.close();
     }
 }
