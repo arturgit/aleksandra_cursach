@@ -5,6 +5,8 @@ import models.Level;
 import models.Position;
 import models.Role;
 import models.User;
+import repository.LevelRepositoty;
+import repository.PositionRepository;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -27,11 +29,16 @@ public class AdminService {
     private static final String saveUserQuery = "INSERT INTO users (login, password, name, role_id, position_id, level_id) " +
             "VALUE (?, ?, ?, ?, ?, ?);";
 
-    private static final String findLevel = "SELECT * FROM levels WHERE levels.name = ?;";
-
-    private static final String findPosition = "SELECT * FROM positions WHERE positions.name = ?;";
 
     private static final String deleteUserQuery = "DELETE FROM users WHERE users.id = ?;";
+
+    private LevelRepositoty levelRepositoty = null;
+    private PositionRepository positionRepository = null;
+
+    public AdminService() {
+        this.levelRepositoty = LevelRepositoty.getLevelRepositoty();
+        this.positionRepository = PositionRepository.getPositionRepository();
+    }
 
     public List<User> getUsers() throws SQLException, IOException, ClassNotFoundException {
         Connection dbConnection = DatabaseConnector.getDBConnection();
@@ -42,8 +49,8 @@ public class AdminService {
     }
 
     public void saveUser(User user) throws SQLException, IOException, ClassNotFoundException {
-        int levelId = this.findLevelByName(user.getLevel().getName());
-        int positionId = this.findPositionByName(user.getPosition().getName());
+        int levelId = this.levelRepositoty.findLevelIdByName(user.getLevel().getName());
+        int positionId = this.positionRepository.findPositionIdByName(user.getPosition().getName());
 
         Connection dbConnection = DatabaseConnector.getDBConnection();
         PreparedStatement statement = dbConnection.prepareStatement(AdminService.saveUserQuery);
@@ -55,28 +62,6 @@ public class AdminService {
         statement.setLong(6, levelId);
         statement.execute();
         dbConnection.close();
-    }
-
-    private int findLevelByName(String name) throws SQLException, IOException, ClassNotFoundException {
-        Connection dbConnection = DatabaseConnector.getDBConnection();
-        PreparedStatement statement = dbConnection.prepareStatement(AdminService.findLevel);
-        statement.setString(1, name);
-        ResultSet rs = statement.executeQuery();
-        rs.next();
-        int id = rs.getInt("id");
-        dbConnection.close();
-        return id;
-    }
-
-    private int findPositionByName(String name) throws SQLException, IOException, ClassNotFoundException {
-        Connection dbConnection = DatabaseConnector.getDBConnection();
-        PreparedStatement statement = dbConnection.prepareStatement(AdminService.findPosition);
-        statement.setString(1, name);
-        ResultSet rs = statement.executeQuery();
-        rs.next();
-        int id = rs.getInt("id");
-        dbConnection.close();
-        return id;
     }
 
     private List<User> getListOfUser(PreparedStatement statement) throws SQLException {

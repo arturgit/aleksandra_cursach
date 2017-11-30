@@ -45,20 +45,22 @@ CREATE TABLE tests (
 	CONSTRAINT FK_users_levels FOREIGN KEY (level_id) REFERENCES levels (id)
 );
 
+CREATE TABLE questions (
+	id int not null auto_increment,
+	title VARCHAR(200) not null,
+	test_id int not null,
+	primary key (id),
+	CONSTRAINT FK_questions_tests FOREIGN KEY (test_id) REFERENCES tests (id)
+);
+
+
 CREATE TABLE options (
 	id int not null auto_increment,
 	title VARCHAR(200) not null,
 	question_id int not null,
-	primary key (id)
-);
-
-CREATE TABLE questions (
-	id int not null auto_increment,
-	title VARCHAR(200) not null,
-	option_id int not null,
-	test_id int not null,
+	istrue boolean not null,
 	primary key (id),
-	CONSTRAINT FK_questions_options FOREIGN KEY (option_id) REFERENCES questions (id)
+	CONSTRAINT FK_options_questions FOREIGN KEY (question_id) REFERENCES questions (id)
 );
 
 ALTER TABLE options
@@ -79,3 +81,12 @@ INSERT INTO levels (name) VALUE ('Senior');
 
 INSERT INTO users (login, password, name, role_id, position_id, level_id) 
 	VALUE ('admin', 'qwerty', 'Aleksandra', 2, 1, 1);
+
+INSERT INTO tests (title, position_id, level_id) VALUE ('Junior Tester', 1, 1);
+INSERT INTO tests (title, position_id, level_id) VALUE ('Middle Tester', 1, 2);
+INSERT INTO tests (title, position_id, level_id) VALUE ('Senior Tester', 1, 3);
+
+INSERT INTO questions (title, test_id) VALUE ('Что такое баг?', 1);
+INSERT INTO options (title, question_id, istrue) VALUE ('Ошибка в программе', 1, true);
+INSERT INTO options (title, question_id, istrue) VALUE ('Ругательство', 1, false);
+
