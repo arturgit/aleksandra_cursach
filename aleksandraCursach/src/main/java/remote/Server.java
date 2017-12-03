@@ -1,6 +1,7 @@
 package remote;
 
 import models.Role;
+import models.User;
 import services.LoginService;
 
 import java.rmi.RemoteException;
@@ -16,7 +17,7 @@ public class Server extends UnicastRemoteObject implements ServerRemote {
         this.loginService = new LoginService();
     }
 
-    public Role login(String login, String password) throws RemoteException {
+    public User login(String login, String password) throws RemoteException {
         try {
             return this.loginService.login(login, password);
         } catch (Exception e) {

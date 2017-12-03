@@ -14,6 +14,10 @@ public class User implements Serializable{
     private Position position;
     private Level level;
 
+    public static User empty() {
+        return new User(null, null, null, null, null, null, null);
+    }
+
     public User(Long id, String login, String password, String name, Role role, Position position, Level level) {
         this.id = id;
         this.login = login;
@@ -50,5 +54,29 @@ public class User implements Serializable{
 
     public Level getLevel() {
         return level;
+    }
+
+    public void setLogin(String login) {
+        this.login = login;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
+    public void setPosition(Position position) {
+        this.position = position;
+    }
+
+    public void setLevel(Level level) {
+        this.level = level;
     }
 }

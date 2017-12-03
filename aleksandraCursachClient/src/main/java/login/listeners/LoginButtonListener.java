@@ -1,9 +1,9 @@
 package login.listeners;
 
-import models.Role;
-import router.MainRouter;
+import models.User;
 import remote.ClientConnector;
 import remote.ServerRemote;
+import router.MainRouter;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -28,7 +28,7 @@ public class LoginButtonListener implements ActionListener {
         this.checkLogin(this.login(login, password));
     }
 
-    private Role login(String login, String password) {
+    private User login(String login, String password) {
         try {
             ServerRemote serverRemote = ClientConnector.getServerRemote();
             return serverRemote.login(login, password);
@@ -38,10 +38,13 @@ public class LoginButtonListener implements ActionListener {
         }
     }
 
-    private void checkLogin(Role role) {
-        if (role != null) {
+    private void checkLogin(User user) {
+        if (user != null) {
             MainRouter router = MainRouter.getMainRouter();
-            router.setRole(role);
+            router.setRole(user.getRole());
+            router.setLevel(user.getLevel());
+            router.setPosition(user.getPosition());
+            router.setName(user.getName());
             router.loginRoute();
         }
     }

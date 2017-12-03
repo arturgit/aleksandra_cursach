@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * Created by Artur on 15.11.2017.
  */
-public class Role  implements Serializable {
+public class Role implements Serializable {
     private Long id;
     private String name;
 

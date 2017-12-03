@@ -15,15 +15,16 @@ import java.sql.SQLException;
  * Created by Artur on 30.11.2017.
  */
 public class TestService {
-
     private static final String selectTestQuery = "Select * from tests WHERE tests.level_id=? and tests.position_id=?;";
 
     private LevelRepositoty levelRepositoty = null;
     private PositionRepository positionRepository = null;
+    private QuestionService questionService = null;
 
     public TestService() {
         this.levelRepositoty = LevelRepositoty.getLevelRepositoty();
         this.positionRepository = PositionRepository.getPositionRepository();
+        this.questionService = QuestionService.getQuestionService();
     }
 
     public Test getTest(String levelName, String positionName) throws SQLException, IOException, ClassNotFoundException {
@@ -36,11 +37,16 @@ public class TestService {
         return test;
     }
 
-    private Test toTest(ResultSet rs) throws SQLException {
+    private Test toTest(ResultSet rs) throws SQLException, IOException, ClassNotFoundException {
         Test test = null;
         if (rs.next()) {
             test = new Test(rs.getInt("id"), rs.getString("title"));
         }
+        return this.toTestWithQuestions(test);
+    }
+
+    private Test toTestWithQuestions(Test test) throws SQLException, IOException, ClassNotFoundException {
+        test.setQuestions(this.questionService.getQuestionsByTestId(test));
         return test;
     }
 }
