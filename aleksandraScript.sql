@@ -82,11 +82,30 @@ INSERT INTO levels (name) VALUE ('Senior');
 INSERT INTO users (login, password, name, role_id, position_id, level_id) 
 	VALUE ('admin', 'qwerty', 'Aleksandra', 2, 1, 1);
 
-INSERT INTO tests (title, position_id, level_id) VALUE ('Junior Tester', 1, 1);
-INSERT INTO tests (title, position_id, level_id) VALUE ('Middle Tester', 1, 2);
-INSERT INTO tests (title, position_id, level_id) VALUE ('Senior Tester', 1, 3);
+INSERT INTO tests (title, position_id, level_id) VALUE ('Junior Tester', 1, 1);	#1
+INSERT INTO tests (title, position_id, level_id) VALUE ('Middle Tester', 1, 2);	#2
+INSERT INTO tests (title, position_id, level_id) VALUE ('Senior Tester', 1, 3); #3
+INSERT INTO tests (title, position_id, level_id) VALUE ('Junior BA', 2, 1);		#4
+INSERT INTO tests (title, position_id, level_id) VALUE ('Middle BA', 2, 2);		#5
+INSERT INTO tests (title, position_id, level_id) VALUE ('Senior BA', 2, 3);		#6
+INSERT INTO tests (title, position_id, level_id) VALUE ('Junior JavaDev', 3, 1);#7
+INSERT INTO tests (title, position_id, level_id) VALUE ('Middle JavaDev', 3, 2);#8
+INSERT INTO tests (title, position_id, level_id) VALUE ('Senior JavaDev', 3, 3);#9
+INSERT INTO tests (title, position_id, level_id) VALUE ('Junior WebDev', 4, 1);	#10
+INSERT INTO tests (title, position_id, level_id) VALUE ('Middle WebDev', 4, 2); #11
+INSERT INTO tests (title, position_id, level_id) VALUE ('Senior WebDev', 4, 3);	#12
 
 INSERT INTO questions (title, test_id) VALUE ('Что такое баг?', 1);
 INSERT INTO options (title, question_id, istrue) VALUE ('Ошибка в программе', 1, true);
 INSERT INTO options (title, question_id, istrue) VALUE ('Ругательство', 1, false);
+INSERT INTO options (title, question_id, istrue) VALUE ('Еда', 1, false);
 
+INSERT INTO questions (title, test_id) VALUE ('Какое из тестирований существует?', 1);
+INSERT INTO options (title, question_id, istrue) VALUE ('Обочное', 2, false);
+INSERT INTO options (title, question_id, istrue) VALUE ('Нагрузочное', 2, true);
+INSERT INTO options (title, question_id, istrue) VALUE ('Прачечное', 2, false);
+
+INSERT INTO questions (title, test_id) VALUE ('Что нельзя тестировать?', 1);
+INSERT INTO options (title, question_id, istrue) VALUE ('Документацию', 3, false);
+INSERT INTO options (title, question_id, istrue) VALUE ('Требования', 3, false);
+INSERT INTO options (title, question_id, istrue) VALUE ('Майских жуков', 3, true);

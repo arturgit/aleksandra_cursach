@@ -32,7 +32,7 @@ public class QuestionRepository {
         Connection dbConnection = DatabaseConnector.getDBConnection();
         PreparedStatement statement = dbConnection.prepareStatement(QuestionRepository.selectQuestionsByTestIdQuery);
         statement.setInt(1, id);
-        List<Question> questions = toQuestions(statement.executeQuery());
+        List<Question> questions = this.toQuestions(statement.executeQuery());
         dbConnection.close();
         return questions;
     }

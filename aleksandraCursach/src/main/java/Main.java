@@ -1,5 +1,6 @@
 import remote.Admin;
 import remote.Server;
+import remote.TestRemoteImpl;
 
 import java.io.IOException;
 import java.rmi.registry.LocateRegistry;
@@ -15,6 +16,7 @@ public class Main {
         Registry registry = LocateRegistry.createRegistry(4200);
         registry.rebind("ServerRemote", new Server());
         registry.rebind("AdminRemote", new Admin());
+        registry.rebind("TestRemote", new TestRemoteImpl());
         System.err.println("ServerRemote ready");
     }
 }

@@ -15,7 +15,15 @@ import java.sql.SQLException;
  * Created by Artur on 30.11.2017.
  */
 public class TestService {
+    private static TestService testService = null;
     private static final String selectTestQuery = "Select * from tests WHERE tests.level_id=? and tests.position_id=?;";
+
+    public static TestService getInstance(){
+        if (TestService.testService == null) {
+            TestService.testService = new TestService();
+        }
+        return TestService.testService;
+    }
 
     private LevelRepositoty levelRepositoty = null;
     private PositionRepository positionRepository = null;
@@ -28,10 +36,14 @@ public class TestService {
     }
 
     public Test getTest(String levelName, String positionName) throws SQLException, IOException, ClassNotFoundException {
+        return this.getTest(new Long(this.levelRepositoty.findLevelIdByName(levelName)), new Long(this.positionRepository.findPositionIdByName(positionName)));
+    }
+
+    public Test getTest(Long levelId, Long positionId) throws SQLException, IOException, ClassNotFoundException {
         Connection dbConnection = DatabaseConnector.getDBConnection();
         PreparedStatement statement = dbConnection.prepareStatement(TestService.selectTestQuery);
-        statement.setInt(1, this.levelRepositoty.findLevelIdByName(levelName));
-        statement.setInt(2, this.positionRepository.findPositionIdByName(positionName));
+        statement.setLong(1, levelId);
+        statement.setLong(2, positionId);
         Test test = this.toTest(statement.executeQuery());
         dbConnection.close();
         return test;

@@ -7,9 +7,11 @@ import models.Level;
 import models.Position;
 import models.Role;
 import models.User;
+import result.ResultFrame;
 import test.TestForm;
 
 import javax.swing.*;
+import java.rmi.RemoteException;
 
 /**
  * Created by Artur on 15.11.2017.
@@ -81,9 +83,13 @@ public class MainRouter {
     }
 
     private void toTestRoute() {
-        this.currentFrame.dispose();
-        this.currentFrame = new TestForm();
-        this.currentFrame.setVisible(true);
+        try {
+            this.currentFrame.dispose();
+            this.currentFrame = new TestForm();
+            this.currentFrame.setVisible(true);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
     }
 
     public boolean createUserRoute() {
@@ -94,5 +100,11 @@ public class MainRouter {
             return true;
         }
         return false;
+    }
+
+    public void resultRoute(int result) {
+        this.currentFrame.dispose();
+        this.currentFrame = new ResultFrame(result);
+        this.currentFrame.setVisible(true);
     }
 }

@@ -7,8 +7,8 @@ import repository.QuestionRepository;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.LinkedList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Created by Artur on 30.11.2017.
@@ -33,7 +33,11 @@ public class QuestionService {
 
     public List<Question> getQuestionsByTestId(Test test) throws SQLException, IOException, ClassNotFoundException {
         List<Question> questions = this.questionRepository.selectQuestionsByTestId(test.getId());
-        return questions.stream().map(question -> this.toQuestionWithOptions(question)).collect(Collectors.toList());
+        List<Question> result = new LinkedList<>();
+        for(Question question: questions) {
+            result.add(this.toQuestionWithOptions(question));
+        }
+        return result;
     }
 
     public Question toQuestionWithOptions(Question question) {

@@ -15,7 +15,7 @@ import java.util.List;
  * Created by Artur on 03.12.2017.
  */
 public class OptionRepository {
-    private static final String selectOptionsByQuestionIdQuery = "SELECT * FROM options WHERE option.qurstion_id=?;";
+    private static final String selectOptionsByQuestionIdQuery = "SELECT * FROM options WHERE options.question_id=?;";
 
     private static OptionRepository optionRepository = null;
 
@@ -41,7 +41,7 @@ public class OptionRepository {
     private List<Option> toOptions(ResultSet rs) throws SQLException {
         List<Option> options = new LinkedList<Option>();
         while(rs.next()) {
-            options.add(new Option(rs.getInt("id"), rs.getString("title"), rs.getBoolean("isTrue")));
+            options.add(new Option(rs.getInt("id"), rs.getString("title"), rs.getBoolean("istrue")));
         }
         return options;
     }
