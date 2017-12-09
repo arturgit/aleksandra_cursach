@@ -24,13 +24,16 @@ public class DeleteUserListener implements ActionListener {
     }
 
     public void actionPerformed(ActionEvent e) {
-        TableUser user = this.tableModel.getRow(this.table.getSelectedRow());
-        AdminRemote remote = ClientConnector.getAdminRemote();
-        try {
-            remote.deleteUser(user.getId());
-            MainRouter.getMainRouter().usersRoute();
-        } catch (RemoteException e1) {
-            e1.printStackTrace();
+        int selectedRow = this.table.getSelectedRow();
+        if (selectedRow != -1) {
+            TableUser user = this.tableModel.getRow(selectedRow);
+            AdminRemote remote = ClientConnector.getAdminRemote();
+            try {
+                remote.deleteUser(user.getId());
+                MainRouter.getMainRouter().usersRoute();
+            } catch (RemoteException e1) {
+                e1.printStackTrace();
+            }
         }
     }
 }

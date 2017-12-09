@@ -38,6 +38,15 @@ public class MainRouter {
         MainRouter.user.setRole(role);
     }
 
+
+    public long getId() {
+        return this.user.getId();
+    }
+
+    public void setId(long id) {
+        MainRouter.user.setId(id);
+    }
+
     public Level getLevel() {
         return this.user.getLevel();
     }
@@ -102,9 +111,9 @@ public class MainRouter {
         return false;
     }
 
-    public void resultRoute(int result) {
+    public void resultRoute(int testId, int result) {
         this.currentFrame.dispose();
-        this.currentFrame = new ResultFrame(result);
+        this.currentFrame = new ResultFrame(testId, result);
         this.currentFrame.setVisible(true);
     }
 }

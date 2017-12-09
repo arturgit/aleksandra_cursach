@@ -12,4 +12,6 @@ import java.rmi.RemoteException;
  */
 public interface TestRemote extends Remote {
     public Test getTest(Position position, Level level) throws RemoteException;
+
+    public void saveTestResult(int userId, int testId, int result) throws RemoteException;
 }

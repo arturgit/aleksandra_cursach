@@ -63,9 +63,15 @@ CREATE TABLE options (
 	CONSTRAINT FK_options_questions FOREIGN KEY (question_id) REFERENCES questions (id)
 );
 
-ALTER TABLE options
-ADD CONSTRAINT FK_options_questions FOREIGN KEY (question_id) REFERENCES questions (id);
-
+CREATE TABLE results (
+	id int not null auto_increment,
+	user_id int not null,
+	test_id int not null,
+	result int not null,
+	primary key (id),
+	CONSTRAINT FK_oresults_users FOREIGN KEY (user_id) REFERENCES users (id),
+	CONSTRAINT FK_oresults_tests FOREIGN KEY (test_id) REFERENCES tests (id)
+);
 
 INSERT INTO roles (name) VALUE ('SimplyUser'); 
 INSERT INTO roles (name) VALUE ('Admin'); 

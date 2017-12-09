@@ -1,5 +1,6 @@
 package remote;
 
+import models.Result;
 import models.User;
 
 import java.rmi.Remote;
@@ -15,4 +16,6 @@ public interface AdminRemote extends Remote {
     List<User> saveUser(User user) throws RemoteException;
 
     List<User> deleteUser(long id) throws RemoteException;
+
+    List<Result> getResults() throws RemoteException;
 }

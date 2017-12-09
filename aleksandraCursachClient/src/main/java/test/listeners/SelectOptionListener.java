@@ -19,7 +19,9 @@ public class SelectOptionListener implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         this.questionPanel.checkRightResponse();
         if (!this.questionPanel.nextQuestion()) {
-            MainRouter.getMainRouter().resultRoute(this.questionPanel.getRightResponses());
+            MainRouter.getMainRouter().resultRoute(
+                    this.questionPanel.getTestId(),
+                    this.questionPanel.getRightResponses());
         }
     }
 }

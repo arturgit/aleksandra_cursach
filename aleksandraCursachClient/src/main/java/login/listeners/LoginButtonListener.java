@@ -41,6 +41,7 @@ public class LoginButtonListener implements ActionListener {
     private void checkLogin(User user) {
         if (user != null) {
             MainRouter router = MainRouter.getMainRouter();
+            router.setId(user.getId());
             router.setRole(user.getRole());
             router.setLevel(user.getLevel());
             router.setPosition(user.getPosition());

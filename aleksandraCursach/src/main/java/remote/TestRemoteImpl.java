@@ -26,4 +26,11 @@ public class TestRemoteImpl extends UnicastRemoteObject implements TestRemote {
             return null;
         }
     }
+
+    @Override
+    public void saveTestResult(int userId, int testId, int result) throws RemoteException {
+        try {
+            this.testService.saveTest(userId, testId, result);
+        } catch (Exception e) { }
+    }
 }

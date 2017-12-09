@@ -16,7 +16,8 @@ import java.sql.SQLException;
  */
 public class TestService {
     private static TestService testService = null;
-    private static final String selectTestQuery = "Select * from tests WHERE tests.level_id=? and tests.position_id=?;";
+    private static final String selectTestQuery = "SELECT * FROM tests WHERE tests.level_id=? AND tests.position_id=?;";
+    private static final String saveTestQuery = "INSERT INTO results (user_id, test_id, result) VALUE (?, ?, ?);";
 
     public static TestService getInstance(){
         if (TestService.testService == null) {
@@ -60,5 +61,15 @@ public class TestService {
     private Test toTestWithQuestions(Test test) throws SQLException, IOException, ClassNotFoundException {
         test.setQuestions(this.questionService.getQuestionsByTestId(test));
         return test;
+    }
+
+    public void saveTest(int userId, int testId, int result) throws SQLException, IOException, ClassNotFoundException {
+        Connection dbConnection = DatabaseConnector.getDBConnection();
+        PreparedStatement statement = dbConnection.prepareStatement(TestService.saveTestQuery);
+        statement.setLong(1, userId);
+        statement.setLong(2, testId);
+        statement.setLong(3, result);
+        statement.execute();
+        dbConnection.close();
     }
 }

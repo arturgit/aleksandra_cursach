@@ -37,6 +37,10 @@ public class QuestionPanel extends JPanel {
         return this.rightResponses;
     }
 
+    public int getTestId() {
+        return this.test.getId();
+    }
+
     public boolean nextQuestion() {
         this.currentQuestionIndex++;
         if (this.test.getQuestions().size() > this.currentQuestionIndex) {
