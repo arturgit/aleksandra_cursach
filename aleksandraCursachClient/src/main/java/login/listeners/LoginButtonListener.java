@@ -47,6 +47,8 @@ public class LoginButtonListener implements ActionListener {
             router.setPosition(user.getPosition());
             router.setName(user.getName());
             router.loginRoute();
+        } else {
+            JOptionPane.showMessageDialog(new JOptionPane(), "Не корректные данные.");
         }
     }
 }
