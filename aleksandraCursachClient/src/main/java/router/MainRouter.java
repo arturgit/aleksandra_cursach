@@ -111,9 +111,9 @@ public class MainRouter {
         return false;
     }
 
-    public void resultRoute(int testId, int result) {
+    public void resultRoute(int testId, int col, int result) {
         this.currentFrame.dispose();
-        this.currentFrame = new ResultFrame(testId, result);
+        this.currentFrame = new ResultFrame(testId, col, result);
         this.currentFrame.setVisible(true);
     }
 }

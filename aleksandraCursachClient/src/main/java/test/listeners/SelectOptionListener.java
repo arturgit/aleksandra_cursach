@@ -21,6 +21,7 @@ public class SelectOptionListener implements ActionListener {
         if (!this.questionPanel.nextQuestion()) {
             MainRouter.getMainRouter().resultRoute(
                     this.questionPanel.getTestId(),
+                    this.questionPanel.getCol(),
                     this.questionPanel.getRightResponses());
         }
     }
