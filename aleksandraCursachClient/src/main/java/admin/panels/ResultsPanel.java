@@ -9,10 +9,13 @@ import javax.swing.*;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.regex.PatternSyntaxException;
 
 /**
  * Created by Artur on 09.12.2017.
@@ -21,6 +24,8 @@ public class ResultsPanel extends JPanel {
     private JTable table = null;
     private ResultsTableModel tableModel = null;
     private JLabel titleLabel = null;
+    private JButton filtrButton = null;
+    public JTextField textField = null;
 
     public ResultsPanel() {
         this.initComponents();
@@ -36,12 +41,15 @@ public class ResultsPanel extends JPanel {
     private void createComponents() {
         this.table = new JTable();
         this.titleLabel = new JLabel("Результаты: ");
+        this.textField = new JTextField(10);
     }
 
     private void initTopPanel() {
         JPanel panel = new JPanel();
         panel.setLayout(new FlowLayout(FlowLayout.LEFT));
         panel.add(this.titleLabel);
+        panel.add(this.textField);
+        panel.add(this.filtrButton);
         this.add(panel, BorderLayout.PAGE_START);
     }
 
@@ -52,8 +60,27 @@ public class ResultsPanel extends JPanel {
     private JScrollPane getTable() {
         this.tableModel = new ResultsTableModel(this.getTableResultsFromServer());
         this.table = new JTable(this.tableModel);
-        RowSorter<TableModel> sorter = new TableRowSorter<TableModel>(this.tableModel);
+
+        final TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(this.tableModel);
         table.setRowSorter(sorter);
+
+        this.filtrButton = new JButton("Фильтровать");
+        final ResultsPanel self = this;
+        this.filtrButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                String text = self.textField.getText();
+                if (text.length() == 0) {
+                    sorter.setRowFilter(null);
+                } else {
+                    try {
+                        sorter.setRowFilter(RowFilter
+                                        .regexFilter(text));
+                    } catch (PatternSyntaxException pse) {
+                        System.err.println("Неверный формат фильтрации");
+                    }
+                }
+            }
+        });
         return new JScrollPane(table);
     }
 
