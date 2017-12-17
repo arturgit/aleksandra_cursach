@@ -6,6 +6,8 @@ import models.Result;
 import remote.ClientConnector;
 
 import javax.swing.*;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 import java.awt.*;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
@@ -28,12 +30,19 @@ public class ResultsPanel extends JPanel {
         this.setLayout(new BorderLayout());
         this.createComponents();
         this.initJTable();
-        this.add(this.titleLabel, BorderLayout.PAGE_START);
+        this.initTopPanel();
     }
 
     private void createComponents() {
         this.table = new JTable();
-        this.titleLabel = new JLabel("Results: ");
+        this.titleLabel = new JLabel("Результаты: ");
+    }
+
+    private void initTopPanel() {
+        JPanel panel = new JPanel();
+        panel.setLayout(new FlowLayout(FlowLayout.LEFT));
+        panel.add(this.titleLabel);
+        this.add(panel, BorderLayout.PAGE_START);
     }
 
     private void initJTable() {
@@ -43,6 +52,8 @@ public class ResultsPanel extends JPanel {
     private JScrollPane getTable() {
         this.tableModel = new ResultsTableModel(this.getTableResultsFromServer());
         this.table = new JTable(this.tableModel);
+        RowSorter<TableModel> sorter = new TableRowSorter<TableModel>(this.tableModel);
+        table.setRowSorter(sorter);
         return new JScrollPane(table);
     }
 
@@ -64,6 +75,5 @@ public class ResultsPanel extends JPanel {
         }
         return tableResults;
     }
-
 }
 

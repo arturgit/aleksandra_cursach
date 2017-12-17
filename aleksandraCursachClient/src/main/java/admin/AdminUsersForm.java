@@ -14,7 +14,7 @@ public class AdminUsersForm extends JFrame {
     private ResultsPanel resultsPanel = null;
 
     public AdminUsersForm() {
-        super("Users");
+        super("Пользователи");
         this.initFrameSettings();
         this.initComponents();
     }

@@ -23,10 +23,6 @@ public class ResultsTableModel implements TableModel {
         listeners.add(listener);
     }
 
-    public Class<?> getColumnClass(int columnIndex) {
-        return String.class;
-    }
-
     public int getColumnCount() {
         return 6;
     }
@@ -74,5 +70,15 @@ public class ResultsTableModel implements TableModel {
 
     public void setValueAt(Object value, int rowIndex, int columnIndex) {
 
+    }
+
+    public Class getColumnClass(int column) {
+        Class returnValue;
+        if ((column >= 0) && (column < getColumnCount())) {
+            returnValue = getValueAt(0, column).getClass();
+        } else {
+            returnValue = Object.class;
+        }
+        return returnValue;
     }
 }

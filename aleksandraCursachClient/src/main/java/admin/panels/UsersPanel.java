@@ -35,9 +35,9 @@ public class UsersPanel extends JPanel {
 
     private void createComponents() {
         this.table = new JTable();
-        this.newButton = new JButton("New");
-        this.deleteButton = new JButton("Delete");
-        this.titleLabel = new JLabel("Users: ");
+        this.newButton = new JButton("Создать");
+        this.deleteButton = new JButton("Удальть");
+        this.titleLabel = new JLabel("Пользователи: ");
     }
 
     private void initButtonMenu() {

@@ -10,15 +10,15 @@ import java.awt.*;
  * Created by Artur on 15.11.2017.
  */
 public class LoginForm extends JFrame {
-    private JLabel loginLabel = new JLabel("Login:");
-    private JLabel passwordLabel = new JLabel("Password:");
+    private JLabel loginLabel = new JLabel("Логин:");
+    private JLabel passwordLabel = new JLabel("Пароль:");
     private JTextField loginTextField = new JTextField(10);
     private JPasswordField passwordField = new JPasswordField(10);
-    private JButton loginButton = new JButton("Login");
-    private JButton closeButton = new JButton("Close");
+    private JButton loginButton = new JButton("Войти");
+    private JButton closeButton = new JButton("Закрыть");
 
     public LoginForm() {
-        super("Login");
+        super("Вход");
         this.initFrameSettings();
         this.initComponents();
     }

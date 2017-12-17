@@ -53,18 +53,18 @@ public class CreateUserForm extends JFrame {
     }
 
     private void createComponents() {
-        this.backButton = new JButton("Back");
-        this.createButton = new JButton("Create");
-        this.loginLabel = new JLabel("Login:");
+        this.backButton = new JButton("Назад");
+        this.createButton = new JButton("Создать");
+        this.loginLabel = new JLabel("Логин:");
         this.loginField = new JTextField(10);
-        this.passwordLabel = new JLabel("Password:");
+        this.passwordLabel = new JLabel("Пароль:");
         this.passwordField = new JTextField(10);
-        this.nameLabel = new JLabel("Name:");
+        this.nameLabel = new JLabel("Имя:");
         this.nameField = new JTextField(10);
-        this.positionLabel = new JLabel("Position:");
+        this.positionLabel = new JLabel("Позиция:");
         String[] positions = { "Tester", "BA", "WebDev", "JavaDev" };
         this.positionBox = new JComboBox(positions);
-        this.levelLabel = new JLabel("Level");
+        this.levelLabel = new JLabel("Уровень");
         String[] levels = { "Junior", "Middle", "Senior" };
         this.levelBox = new JComboBox(levels);
     }
