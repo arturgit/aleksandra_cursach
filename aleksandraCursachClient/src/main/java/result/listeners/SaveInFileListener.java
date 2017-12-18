@@ -24,7 +24,7 @@ public class SaveInFileListener implements ActionListener {
         try(FileWriter writer = new FileWriter(savePath, false))
         {
             String text = "Вы ответили на "+this.result+" вопросов из "+this.col;
-            text += ". Выполнено " + ((double)this.result)/this.col*100 + "% теста. ";
+            text += ". Выполнено " + this.roundResult(((double)this.result)/this.col*100, 2) + "% теста. ";
             if (((double)this.result)/this.col > 0.5) {
                 text += " Тест сдан успешно.";
             } else {
@@ -37,5 +37,12 @@ public class SaveInFileListener implements ActionListener {
         catch(IOException ex){
             System.out.println(ex.getMessage());
         }
+    }
+
+    double roundResult(double d, int precise) {
+        precise = 10^precise;
+        d = d*precise;
+        int i = (int) Math.round(d);
+        return (double) i/precise;
     }
 }

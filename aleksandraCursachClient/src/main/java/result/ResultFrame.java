@@ -19,7 +19,7 @@ public class ResultFrame extends JFrame {
     public ResultFrame(int testId, int col, int result) throws HeadlessException {
         this.initFrameSettings();
         String text = "Вы правильно ответили на " + result + " вопросов из " + col;
-        text += ". Выполнено " + ((double)result)/col*100 + "% теста";
+        text += ". Выполнено " + this.roundResult(((double)result)/col*100, 2) + "% теста";
         if (((double)result)/col > 0.5) {
             text += ". Тест сдан успешно.";
         } else {
@@ -55,5 +55,12 @@ public class ResultFrame extends JFrame {
         this.saveButton = new JButton("Сохранить в файл");
         this.saveButton.addActionListener(new SaveInFileListener(col, result));
         this.add(this.saveButton);
+    }
+
+    double roundResult(double d, int precise) {
+        precise = 10^precise;
+        d = d*precise;
+        int i = (int) Math.round(d);
+        return (double) i/precise;
     }
 }
