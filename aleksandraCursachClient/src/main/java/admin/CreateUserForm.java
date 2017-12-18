@@ -2,9 +2,15 @@ package admin;
 
 import admin.listeners.BackToUsersListener;
 import admin.listeners.CreateUserListener;
+import admin.listeners.UpdateUserListener;
+import models.Level;
+import models.Position;
+import models.User;
 
 import javax.swing.*;
+import javax.swing.table.TableModel;
 import java.awt.*;
+import java.awt.event.ActionListener;
 
 /**
  * Created by Artur on 18.11.2017.
@@ -28,9 +34,33 @@ public class CreateUserForm extends JFrame {
     private JLabel levelLabel = null;
     private JComboBox levelBox = null;
 
-    public CreateUserForm() {
+    public CreateUserForm(boolean state, JTable table) {
+        this.init(state, table);
+        this.setUser(this.createUserModel(table));
+    }
+
+    private void init(boolean state, JTable table) {
         this.initFrameSettings();
         this.initComponents();
+        int column = 0;
+        int row = table.getSelectedRow();
+        TableModel model = table.getModel();
+        Long id = new Long(model.getValueAt(row, column).toString());
+        ActionListener listener = state
+                ? new CreateUserListener(this.loginField, this.passwordField, this.nameField, this.positionBox, this.levelBox)
+                : new UpdateUserListener(id, this.loginField, this.passwordField, this.nameField, this.positionBox, this.levelBox);
+        String labelValue = state
+                ? "Создать"
+                : "Редактировать";
+        this.initButtonListeners(listener, labelValue);
+    }
+
+    public void setUser(User user) {
+        this.loginField.setText(user.getLogin());
+        this.passwordField.setText(user.getPassword());
+        this.nameField.setText(user.getName());
+        this.positionBox.setSelectedItem(user.getPosition());
+        this.levelBox.setSelectedItem(user.getLevel());
     }
 
     private void initFrameSettings() {
@@ -49,7 +79,6 @@ public class CreateUserForm extends JFrame {
         this.initRow(this.positionLabel, this.positionBox, FlowLayout.LEFT);
         this.initRow(this.levelLabel, this.levelBox, FlowLayout.LEFT);
         this.initRow(this.createButton, this.backButton, FlowLayout.CENTER);
-        this.initButtonListeners();
     }
 
     private void createComponents() {
@@ -84,9 +113,25 @@ public class CreateUserForm extends JFrame {
         return panel;
     }
 
-    private void initButtonListeners() {
+    private void initButtonListeners(ActionListener listener, String labelValue) {
         this.backButton.addActionListener(new BackToUsersListener());
-        this.createButton.addActionListener(new CreateUserListener(this.loginField, this.passwordField,
-                this.nameField, this.positionBox, this.levelBox));
+        this.createButton.addActionListener(listener);
+        this.createButton.setText(labelValue);
+    }
+
+    private User createUserModel(JTable table) {
+        int column = 0;
+        int row = table.getSelectedRow();
+        TableModel model = table.getModel();
+        String value = model.getValueAt(row, column).toString();
+
+        return new User(
+                new Long(model.getValueAt(row, 0).toString()),
+                model.getValueAt(row, 1).toString(),
+                model.getValueAt(row, 2).toString(),
+                model.getValueAt(row, 3).toString(),
+                null,
+                new Position(null, model.getValueAt(row, 4).toString()),
+                new Level(null, model.getValueAt(row, 5).toString()));
     }
 }

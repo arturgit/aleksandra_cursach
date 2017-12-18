@@ -18,4 +18,6 @@ public interface AdminRemote extends Remote {
     List<User> deleteUser(long id) throws RemoteException;
 
     List<Result> getResults() throws RemoteException;
+
+    boolean updateUser(User user) throws RemoteException;
 }

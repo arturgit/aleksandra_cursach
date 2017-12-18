@@ -42,6 +42,17 @@ public class Admin extends UnicastRemoteObject implements AdminRemote {
         return res;
     }
 
+
+    @Override
+    public boolean updateUser(User user) throws RemoteException {
+        try {
+            return this.adminService.updateUser(user);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
     public List<User> deleteUser(long id) throws RemoteException {
         try {
             this.adminService.deleteUser(id);
@@ -59,4 +70,5 @@ public class Admin extends UnicastRemoteObject implements AdminRemote {
             return new ArrayList<>();
         }
     }
+
 }

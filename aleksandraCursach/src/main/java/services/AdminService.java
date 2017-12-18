@@ -29,7 +29,11 @@ public class AdminService {
     private static final String saveUserQuery = "INSERT INTO users (login, password, name, role_id, position_id, level_id) " +
             "VALUE (?, ?, ?, ?, ?, ?);";
 
-    private static final String checkExist = "SELECT COUNT(*) as count FROM users WHERE login=?;";
+    private static final String updateUserQuery = "UPDATE users " +
+            "SET login=?, password=?, name=?, position_id=?, level_id=? " +
+            "WHERE id=?;";
+
+    private static final String checkExist = "SELECT id FROM users WHERE login=?;";
 
     private static final String deleteUserQuery = "DELETE FROM users WHERE users.id = ?;";
 
@@ -68,6 +72,25 @@ public class AdminService {
         return res;
     }
 
+    public boolean updateUser(User user) throws SQLException, IOException, ClassNotFoundException {
+        int levelId = this.levelRepositoty.findLevelIdByName(user.getLevel().getName());
+        int positionId = this.positionRepository.findPositionIdByName(user.getPosition().getName());
+        boolean res = this.checkExist(user.getLogin(), user.getId());
+        if(res){
+            Connection dbConnection = DatabaseConnector.getDBConnection();
+            PreparedStatement statement = dbConnection.prepareStatement(AdminService.updateUserQuery);
+            statement.setString(1, user.getLogin());
+            statement.setString(2, user.getPassword());
+            statement.setString(3, user.getName());
+            statement.setLong(4, positionId);
+            statement.setLong(5, levelId);
+            statement.setLong(6, user.getId());
+            statement.execute();
+            dbConnection.close();
+        }
+        return res;
+    }
+
     private List<User> getListOfUser(PreparedStatement statement) throws SQLException {
         ResultSet rs = statement.executeQuery();
         List<User> users = new ArrayList<User>();
@@ -94,8 +117,20 @@ public class AdminService {
         PreparedStatement statement = dbConnection.prepareStatement(AdminService.checkExist);
         statement.setString(1, login);
         ResultSet rs = statement.executeQuery();
-        rs.next();
-        boolean res = rs.getInt("count")==0;
+        boolean res = rs.next();
+        dbConnection.close();
+        return res;
+    }
+
+    private boolean checkExist(String login, Long id) throws SQLException, IOException, ClassNotFoundException {
+        Connection dbConnection = DatabaseConnector.getDBConnection();
+        PreparedStatement statement = dbConnection.prepareStatement(AdminService.checkExist);
+        statement.setString(1, login);
+        ResultSet rs = statement.executeQuery();
+        boolean res = rs.next();
+        if (res && id != rs.getInt("id")) {
+            return false;
+        }
         dbConnection.close();
         return res;
     }

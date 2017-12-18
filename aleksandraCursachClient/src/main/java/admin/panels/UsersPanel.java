@@ -19,8 +19,10 @@ public class UsersPanel extends JPanel {
     private JTable table = null;
     private UsersTableModel tableModel = null;
     private JButton newButton = null;
+    private JButton editButton = null;
     private JButton deleteButton = null;
     private JLabel titleLabel = null;
+    private CreatingUserFormListener editListener = null;
 
     public UsersPanel() {
         this.initComponents();
@@ -36,7 +38,8 @@ public class UsersPanel extends JPanel {
     private void createComponents() {
         this.table = new JTable();
         this.newButton = new JButton("Создать");
-        this.deleteButton = new JButton("Удальть");
+        this.editButton = new JButton("Редактировать");
+        this.deleteButton = new JButton("Удалить");
         this.titleLabel = new JLabel("Пользователи: ");
     }
 
@@ -47,10 +50,13 @@ public class UsersPanel extends JPanel {
     private JPanel getButtonMenu() {
         JPanel panel = new JPanel();
         panel.setLayout(new FlowLayout(FlowLayout.LEFT));
-        this.newButton.addActionListener(new CreatingUserFormListener(this.table));
+        this.newButton.addActionListener(new CreatingUserFormListener(this.table, true, null));
+        this.editListener = new CreatingUserFormListener(this.table, false, null);
+        this.editButton.addActionListener(this.editListener);
         this.deleteButton.addActionListener(new DeleteUserListener(this.table, this.tableModel));
         panel.add(this.titleLabel);
         panel.add(this.newButton);
+        panel.add(this.editButton);
         panel.add(this.deleteButton);
         return panel;
     }

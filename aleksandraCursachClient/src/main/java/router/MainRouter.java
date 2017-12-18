@@ -101,10 +101,10 @@ public class MainRouter {
         }
     }
 
-    public boolean createUserRoute() {
+    public boolean createUserRoute(boolean state, JTable table) {
         if (MainRouter.user.getRole() != null && MainRouter.user.getRole().getName().equals("Admin")) {
             this.currentFrame.dispose();
-            this.currentFrame = new CreateUserForm();
+            this.currentFrame = new CreateUserForm(state, table);
             this.currentFrame.setVisible(true);
             return true;
         }
