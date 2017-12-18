@@ -18,7 +18,15 @@ public class ResultFrame extends JFrame {
 
     public ResultFrame(int testId, int col, int result) throws HeadlessException {
         this.initFrameSettings();
-        this.textLabel = new JLabel("Вы правильно ответили на " + result + " вопросов из " + col);
+        String text = "Вы правильно ответили на " + result + " вопросов из " + col;
+        text += ". Выполнено " + ((double)result)/col*100 + "% теста";
+        if (((double)result)/col > 0.5) {
+            text += ". Тест сдан успешно.";
+        } else {
+            text += ". Тест не сдан.";
+        }
+
+        this.textLabel = new JLabel(text);
         this.add(this.textLabel);
 
         this.initButtons(col, result);
@@ -32,7 +40,7 @@ public class ResultFrame extends JFrame {
 
     private void initFrameSettings() {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setSize(300, 140);
+        this.setSize(600, 140);
         this.setLayout(new GridLayout(2, 1));
         this.setLocationRelativeTo(null);
         this.setVisible(true);

@@ -24,6 +24,12 @@ public class SaveInFileListener implements ActionListener {
         try(FileWriter writer = new FileWriter(savePath, false))
         {
             String text = "Вы ответили на "+this.result+" вопросов из "+this.col;
+            text += ". Выполнено " + ((double)this.result)/this.col*100 + "% теста. ";
+            if (((double)this.result)/this.col > 0.5) {
+                text += " Тест сдан успешно.";
+            } else {
+                text += " Тест не сдан.";
+            }
             writer.write(text);
             writer.flush();
             JOptionPane.showMessageDialog(new JOptionPane(), "Сохранено в " + savePath);

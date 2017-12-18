@@ -13,7 +13,7 @@ import java.util.List;
 public interface AdminRemote extends Remote {
     List<User> getUsers() throws RemoteException;
 
-    List<User> saveUser(User user) throws RemoteException;
+    boolean saveUser(User user) throws RemoteException;
 
     List<User> deleteUser(long id) throws RemoteException;
 

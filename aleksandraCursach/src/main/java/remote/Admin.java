@@ -31,13 +31,15 @@ public class Admin extends UnicastRemoteObject implements AdminRemote {
         }
     }
 
-    public List<User> saveUser(User user) throws RemoteException {
+    public boolean saveUser(User user) throws RemoteException {
+        boolean res;
         try {
-            this.adminService.saveUser(user);
+            return this.adminService.saveUser(user);
         } catch (Exception e) {
             e.printStackTrace();
+            res = false;
         }
-        return getUsers();
+        return res;
     }
 
     public List<User> deleteUser(long id) throws RemoteException {

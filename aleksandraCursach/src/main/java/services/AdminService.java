@@ -29,6 +29,7 @@ public class AdminService {
     private static final String saveUserQuery = "INSERT INTO users (login, password, name, role_id, position_id, level_id) " +
             "VALUE (?, ?, ?, ?, ?, ?);";
 
+    private static final String checkExist = "SELECT COUNT(*) as count FROM users WHERE login=?;";
 
     private static final String deleteUserQuery = "DELETE FROM users WHERE users.id = ?;";
 
@@ -48,20 +49,23 @@ public class AdminService {
         return users;
     }
 
-    public void saveUser(User user) throws SQLException, IOException, ClassNotFoundException {
+    public boolean saveUser(User user) throws SQLException, IOException, ClassNotFoundException {
         int levelId = this.levelRepositoty.findLevelIdByName(user.getLevel().getName());
         int positionId = this.positionRepository.findPositionIdByName(user.getPosition().getName());
-
-        Connection dbConnection = DatabaseConnector.getDBConnection();
-        PreparedStatement statement = dbConnection.prepareStatement(AdminService.saveUserQuery);
-        statement.setString(1, user.getLogin());
-        statement.setString(2, user.getPassword());
-        statement.setString(3, user.getName());
-        statement.setLong(4, 1);
-        statement.setLong(5, positionId);
-        statement.setLong(6, levelId);
-        statement.execute();
-        dbConnection.close();
+        boolean res = this.checkExist(user.getLogin());
+        if(res){
+            Connection dbConnection = DatabaseConnector.getDBConnection();
+            PreparedStatement statement = dbConnection.prepareStatement(AdminService.saveUserQuery);
+            statement.setString(1, user.getLogin());
+            statement.setString(2, user.getPassword());
+            statement.setString(3, user.getName());
+            statement.setLong(4, 1);
+            statement.setLong(5, positionId);
+            statement.setLong(6, levelId);
+            statement.execute();
+            dbConnection.close();
+        }
+        return res;
     }
 
     private List<User> getListOfUser(PreparedStatement statement) throws SQLException {
@@ -83,6 +87,17 @@ public class AdminService {
             new Position(new Long(rs.getString("position_id")), rs.getString("position_name")),
             new Level(new Long(rs.getString("level_id")), rs.getString("level_name"))
         );
+    }
+
+    private boolean checkExist(String login) throws SQLException, IOException, ClassNotFoundException {
+        Connection dbConnection = DatabaseConnector.getDBConnection();
+        PreparedStatement statement = dbConnection.prepareStatement(AdminService.checkExist);
+        statement.setString(1, login);
+        ResultSet rs = statement.executeQuery();
+        rs.next();
+        boolean res = rs.getInt("count")==0;
+        dbConnection.close();
+        return res;
     }
 
     public void deleteUser(long id) throws SQLException, IOException, ClassNotFoundException {

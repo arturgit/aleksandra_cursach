@@ -34,8 +34,11 @@ public class CreateUserListener implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         AdminRemote remote = ClientConnector.getAdminRemote();
         try {
-            remote.saveUser(this.createUserModel());
-            MainRouter.getMainRouter().usersRoute();
+            if (!remote.saveUser(this.createUserModel())) {
+                JOptionPane.showMessageDialog(new JOptionPane(), "Такой пользователь уже существует.");
+            } else {
+                MainRouter.getMainRouter().usersRoute();
+            }
         } catch (RemoteException e1) {
             e1.printStackTrace();
         }
